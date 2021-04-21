@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
-import dj-database-url
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -182,3 +182,6 @@ DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
 CART_SESSION_ID = 'cart'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+django_heroku.settings(locals())
