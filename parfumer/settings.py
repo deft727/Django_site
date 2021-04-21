@@ -86,15 +86,26 @@ WSGI_APPLICATION = 'parfumer.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ecom_db',
+        'USER': 'kirill',
+        'PASSWORD' : 'devpass1',
+        'HOST' : 'localhost',
+        'PORT': 5432
     }
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -125,7 +136,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-ADMIN='len.parfums@gmail.com'
+ADMINS = [['Webmaster','len.parfums@gmail.com']]
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -152,6 +163,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'len_parfume/static'),
 )
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
 # db_from_env = dj_database_url.config()
