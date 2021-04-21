@@ -1,0 +1,107 @@
+{%extends 'base.html'%}
+{%load static%}
+{% load cart_tag %}
+{%load crispy_forms_tags%}
+{%block title%} {{title}} {%endblock title%}
+{%block main%}
+
+    <hr class="offset-top">
+
+    <div class="white">
+        <div class="container checkout">
+            <h1>Оформление заказа</h1>
+            <hr class="offset-sm">
+        </div>
+    </div>
+    <hr class="offset-md">
+
+    <div class="container checkout">
+      <form action="{% url 'make_order' %}" method="POST">
+        {%csrf_token%}
+        <div class="row">
+            <div class="col-md-7">
+              {{form|crispy}}
+                  <br>
+                  <br>
+                
+
+                      <!-- <div class="group-select justify" tabindex='1'>
+                          <input class="form-control select" id="payment"  name="payment" value="Выберите способ оплаты" placeholder="" required="" />
+
+                          <ul class="dropdown">
+                          
+                            <li data-value="Наложенный платеж">Наложенный платеж</li>
+                            <li data-value="Оплата картой LiqPal">Оплата картой LiqPal</li>
+                          </ul>
+
+                          <div class="arrow bold"><i class="ion-chevron-down"></i></div>
+                      </div> -->
+                  
+
+                
+
+
+                  <hr class="offset-lg visible-xs visible-sm">
+                  <hr class="offset-lg visible-xs">
+            </div>
+
+            <div class="col-md-5 white">
+                <hr class="offset-md visible-xs visible-sm">
+                <div class="checkout-cart">
+                    <div class="content">
+
+                      {%if request.session.cart.items %}
+                      {% for key,value in request.session.cart.items %}
+
+                        <div class="media">
+                          <div class="media-left">
+                            <a href="/product/{{value.product_slug}}">
+                              <img class="media-object" src="{{value.image}}" alt="{{value.name}}"/>
+                            </a>
+                          </div>
+                          <div class="media-body">
+                            <h2 class="h4 media-heading">{{value.name}}</h2>
+                            <p>{{value.size}} мл</p>
+                            <label>{{value.category}}</label>
+                            <p class="price">{{value.price}} Грн.</p>
+                          </div>
+                          <div class="controls">
+                            <a href="{% url 'item_clear' value.product_id %}"> <i class="ion-trash-b"></i>Удалить </a>
+                          </div>
+                        </div>
+                        
+                        {% endfor %}
+{%endif%}
+                    </div>
+                </div>
+                <hr class="offset-md visible-xs visible-sm">
+            </div>
+
+            <hr class="offset-lg hidden-xs">
+
+            <div class="col-sm-12 white">
+                <hr class="offset-md">
+                <div class="row">
+                    <div class="col-xs-6 col-md-4">
+                        <h3 class="h4 no-margin">Всего: {{cart_total_amount}} Грн</h3>
+                    </div>
+                  
+                    <div class="col-md-4 hidden-xs">
+                    </div>
+                    <div class="col-xs-6 col-md-4">
+                      
+                        <button class="btn btn-primary pull-right" type="submit">Подтвердить заказ</button>
+                    </div>
+                </div>
+                <hr class="offset-md">
+            </div>
+
+        </div>
+        </form>
+    </div>
+
+ 
+
+
+
+{%endblock main%}

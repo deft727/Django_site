@@ -1,0 +1,249 @@
+{%extends 'base.html'%}
+{%load static%}
+{%load item_tag%}
+
+{%block title%} {{title}} {%endblock title%}
+{% load crispy_forms_tags %}
+
+{%block main%}
+<hr class="offset-lg">
+<hr class="offset-lg">
+<hr class="offset-lg hidden-xs">
+
+
+<section class="product">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-7 col-md-7 white no-padding">
+        <div class="carousel-product" data-count=" {% if product.image3 %}3{% elif product.image2 %}2{%else%}1{%endif%}" data-current="1">
+
+          <div class="items">
+            <button class="btn btn-control" data-direction="right"> <i class="ion-ios-arrow-right"></i></button>
+            <button class="btn btn-control" data-direction="left"> <i class="ion-ios-arrow-left"></i></button>
+
+            {% if product.image1 %}
+
+            <div class="item center" data-marker="1">
+              <img src="{{product.image1.url}}" alt="Microsoft Surface Studio" width="500" class="background"/>
+            </div>
+            {%endif%}
+
+            {% if product.image2 %}
+            <div class="item" data-marker="2">
+              <img src="{{product.image2.url}}" alt="Microsoft Surface Studio" class="background"/>
+            </div>
+            {%endif%}
+
+            {% if product.image3 %}
+            <div class="item" data-marker="3">
+              <img src="{{product.image3.url}}" alt="Microsoft Surface Studio" class="background"/>
+            </div>
+            {%endif%}
+
+            
+          </div>
+
+          <ul class="markers">
+            <li data-marker="1" class="active"></li>
+            <li data-marker="2"></li>
+  
+            {% if product.image3 %}
+            <li data-marker="3"></li>
+            {%endif%}
+          </ul>
+
+        </div>
+      </div>
+      <div class="col-sm-5 col-md-5 no-padding-xs" >
+        <div class="caption">
+          {%if product.brand%}
+          <img src="{{product.brand.url}}" alt="{{product.title}}" class="brand hidden-xs hidden-sm" />
+          {%endif%}
+          <h3>{{product.title}}</h3>
+
+          {%if product.get_features.items%}
+          <b class="mt-4"> Характеристики:</b>
+          <table class="table">
+            <tbody>
+            {% for f_name, f_value in product.get_features.items %}
+              <tr>
+                <th scope="row">{{ f_name }}</th>
+                <td> {{f_value}} </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          {%endif%}
+          <hr class="offset-md hidden-sm">
+          <hr class="offset-sm visible-sm">
+          <hr class="offset-xs visible-sm">
+
+          <p class="price" id="mydiv" >${{product.price}}</p>
+
+          {%if product.old_price%}
+          <p class="price through">${{product.old_price}}</p>
+          {%endif%}
+          <hr class="offset-md">
+          {%if product.available%}
+
+                    <form action="{% url 'cart_add' product.id %}" method="GET" name="size">
+                      
+
+          <select name="size" id="myselect" class="form-control" >
+            <option name="size" value=1 >Выберите объем</option>
+            {% for prod in product.sizes.all %}
+              <option name="size" value={{prod.size}}>{{prod.size}} мл</option>
+              {%endfor%}
+          </select> 
+          
+        
+          <hr class="offset-md">
+          <button type="submit"  style="float: left;" class="btn btn-primary rounded"> <i class="ion-bag"></i>В корзину</button>
+
+        </form>
+        
+          {%else%}        
+          <a><button class="btn btn-primary rounded" title="Товар скоро появится на сайте"> <i class="ion-bag"></i>Товар не доступен</button></a>
+          {%endif%}
+         
+          <a href="{%url 'add_to_whishlist' product.slug%}"> <button class="btn btn-link"> <i class="ion-ios-heart"></i> В Избранное</button> </a>
+        </div> 
+      </div>
+    </div>
+    <hr class="offset-sm hidden-xs">
+
+    <div class="row">
+      <div class="col-sm-7 white sm-padding">
+        <hr class="offset-sm visible-xs">
+
+        <h3 class="h2">Описание</h3>
+        <br>
+
+        <p>
+          {{product.description | safe}} 
+        </p>
+        <br>
+
+      </div>
+      <div class="col-sm-5 no-padding-xs">
+        <div class="talk white">
+          <h2 class="h3">Есть вопросы?</h2>
+          <p class="">Напиши нам в вайбер</p>
+          <hr class="offset-md">
+
+          <a href="viber://chat?number=+380939400032" class="btn btn-primary btn-sm"> <i class="ion-social-whatsapp"></i> +38-093-940-0032 </a>
+          <hr class="offset-md visible-xs">
+        </div>
+        <hr class="offset-sm hidden-xs">
+
+        <div class="comments white">
+          <h2 class="h3">Отзывы (#{{product.rewiews_set.all.count}})</h2>
+          <br>
+
+
+          <div class="wrapper">
+            <div class="content">
+
+              {%for review in product.rewiews_set.all %}
+              <h3>{{review.name}}</h3>
+              <label>{{review.data}}</label>
+              <p>
+                {{review.text}}
+              </p>
+              {%endfor%}
+              {%if product.rewiews_set.all.count < 1%}
+              <p>Отзывов нету</p>
+                {%endif%}
+            </div>
+          </div>
+          <hr class="offset-lg">
+          <hr class="offset-md">
+          {% if request.user.is_authenticated %}
+          <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#Modal-Comment"> <i class="ion-chatbox-working"></i> Добавить отзыв </button>
+          {%else%}
+          <button class="btn btn-primary btn-sm" > <i class="ion-chatbox-working"></i><a href="{%url 'registration'%}"> комментарии только для зарегистрированых</a> </button>
+          {%endif%}
+          <hr class="offset-md visible-xs">
+        </div>            
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="offset-lg">
+{% if items %}
+<section class="products">
+  <div class="container">
+    <h2 class="upp align-center-xs">Похожие товары </h2>
+    <hr class="offset-lg">
+
+    <div class="row">
+      {%for item in items%}
+
+      <div class="col-sm-4 col-md-3 product">
+        <div class="body">
+          <a href="{%url 'add_to_whishlist' item.slug%}" class="favorites" 
+              
+              data-favorite={%get_item filter=item.id%}>
+            
+            
+            
+            <i class="ion-ios-heart-outline"></i></a>
+          <a href="{{item.get_absolute_url}}"><img src="{{item.image1.url}}"  alt="{{item.title}}"/></a>
+
+          <div class="content align-center">
+            <p class="price">${{item.price}}</p>
+            <h2 class="h3">{{item.title}}</h2>
+            <hr class="offset-sm">
+
+            <button class="btn btn-link"> <i class="ion-android-open"></i><a href="{{item.get_absolute_url}}"> Details</a></button>
+            <button class="btn btn-primary btn-sm rounded"> <i class="ion-bag"></i> Add to cart</button>
+          </div>
+        </div>
+      </div>
+{%endfor%}
+  
+
+    </div>
+
+  </div>
+</section>
+{%endif%}
+   <div class="modal fade" id="Modal-Comment" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header align-center">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="ion-android-close"></i></span></button>
+            <h1 class="h4 modal-title">Добавить комментарий</h1>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              {% if request.user.is_authenticated %}
+
+            <form action="{%url 'addreview' id=product.id%}" class="join"  method="POST">
+              <div class="row">
+              	<div class="col-sm-12">
+                  {% csrf_token %}
+                  {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+                  {%else%}
+                  <button > Оставлять комментарии могут только зарегистрированные пользователи</button>
+                  {%endif%}
+                	</div>
+                </div>
+              </div>
+             </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  <script type="text/javascript">
+
+let num = Number({{product.price}});
+
+      document.getElementById("myselect").addEventListener("change", function(){
+        document.getElementById('mydiv').innerHTML = '$'+num * this.value;   
+      });
+  </script>
+{%endblock main%}

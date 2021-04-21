@@ -1,0 +1,100 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block title%} {{title}} {%endblock title%}
+{% load search_filter %}
+
+{%block main%}
+<hr class="offset-top">
+<div class="container">
+  <div class="row">
+    <!-- Filter -->
+    <div class="col-sm-4 col-md-3">
+      <hr class="offset-lg">
+
+      <div class="filter">
+        <div class="item">
+          {% block productfilter %}
+        <hr>
+        <form action="{% url 'category_detail' slug=category.slug %}" method="GET">
+            {{ category|product_spec }}
+        <p class="text-center">
+            <button class="btn btn-outline-success" type="submit">Поиск</button>
+            <button class="btn btn-outline-info" type="submit">Сбросить</button>
+        </p>
+        </form>
+       
+    {% endblock productfilter %}
+    
+            </div>
+        <br>
+      </div>
+    </div>
+    <!-- /// -->
+
+    <!-- Products -->
+    <div class="col-sm-8 col-md-9">
+      <hr class="offset-lg">
+
+      <div class="products">
+        <div class="row">
+
+          {%for product in category_products.object_list%}
+          <div class="col-sm-6 col-md-4 product">
+            <div class="body">
+              <a href="{%url 'add_to_whishlist' product.slug%}" class="favorites" data-favorite="inactive"><i class="ion-ios-heart-outline"></i></a>
+              <a href="{{product.get_absolute_url}}"><img src="{{product.image1.url}}"  style="height: 180px;" alt="{{product.image1.title}}"/></a>
+
+              <div class="content">
+                <h1 class="h3">{{product.title}}</h1>
+                <p class="price">${{product.price}}</p>
+                {%if product.old_price%}
+                <p class="price through">${{product.old_price}}</p>
+                {%endif%}
+
+                {%if product.brand_name%}
+                <label>{{product.brand_name}}</label>
+                {%else%}
+                <label>{{product.category.name}}</label>
+                {%endif%}
+                <a href="{{product.get_absolute_url}}"><button class="btn btn-link"> <i class="ion-android-open"></i> Подробнее</button></a>
+                <button class="btn btn-primary btn-sm rounded"> <i class="ion-bag"></i><a href="{% url 'cart_add' product.id %}"> В корзину</a></button>
+              </div>
+            </div>
+          </div>
+          {%endfor%}
+       
+
+        </div>
+      </div>
+
+     
+    </div>
+    <!-- /// -->        <div class="ps-pagination">
+          <ul class="pagination">
+            {% if page.has_other_pages %}
+            {% if page.has_previous %}
+
+            <li><a href="?page={{ page.previous_page_number }}{{addSort}}" aria-label="Previous">
+              <span aria-hidden="true"><i class="ion-ios-arrow-left"></i></span>
+            {%endif%}
+            {% for i in page.paginator.page_range %}
+            {% if page.number == i %}
+            <li class="active"><a href="?page={{i}}">{{i}}</a></li> 
+                       {%else%}
+            <li><a href="?page={{ i }}{{addSort}}">{{ i }}</a></li>
+            {% endif %}
+              {% endfor %}
+              {% if page.has_next %}
+
+            <li><a href="?page={{ page.next_page_number }}{{addSort}}" aria-label="Next">
+              <span aria-hidden="true"><i class="ion-ios-arrow-right"></i></span>
+
+            {% endif %}
+            {% endif %}
+
+          </ul>
+        </div>
+
+  </div>
+</div>
+{%endblock main%}

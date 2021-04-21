@@ -1,0 +1,58 @@
+{%extends 'base.html'%}
+{%block title%} {{title}} {%endblock title%}
+{%block main%}
+
+  <body>
+
+    <hr class="offset-lg">
+    <hr class="offset-lg hidden-xs">
+
+    <div class="container">
+      <div class="row">
+        <!-- Products -->
+        <div class="col-sm-12">
+          <hr class="offset-lg">
+
+          <div class="products">
+            <div class="row">
+
+              {%if not favorite %}
+              <hr class="offset-lg">
+              <hr class="offset-lg">
+              <h3 class="text-center" style="margin: 25px;">  Пусто </h3>
+              <hr class="offset-lg">
+              {%endif%}
+
+              {%if favorite %}
+
+             
+              {%for fav in favorite%}
+
+              <div class="col-sm-6 col-md-4 product">
+                <div class="body">
+                  <a href="{%url 'delete_favorite' fav.products.slug%}" class="favorites" title="удалить из избранного" data-favorite="active"><i class="ion-ios-heart-outline"></i></a>
+                  <a href="{{fav.products.get_absolute_url}}"><img src="{{fav.products.image1.url}}" style="height: 190px;" alt="{{fav.products.title}}"/></a>
+
+                  <div class="content align-center">
+                    <p class="price">{{fav.products.price}}</p>
+                    <h2 class="h3">{{fav.products.title}}</h2>
+                    <hr class="offset-sm">
+
+                    <button class="btn btn-link"> <i class="ion-android-open"></i><a href="{{fav.products.get_absolute_url}}">Подробнее</a> </button>
+                    <button class="btn btn-primary btn-sm rounded"> <i class="ion-bag"></i><a href="{% url 'cart_add' fav.products.id %}"> В корзину</a></button>
+                  </div>
+                </div>
+              </div>
+              {%endfor%}
+              {%endif%}
+            </div>
+          </div>
+      
+        </div>
+        <!-- /// -->    
+
+      </div>
+    </div>
+
+    <hr class="offset-sm">
+  {%endblock main%}

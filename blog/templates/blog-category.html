@@ -1,0 +1,165 @@
+{%extends 'base.html'%}
+{% load categoryTag %}
+{%block title%} {{title}} {%endblock title%}
+{%block main%}
+
+
+       
+    <hr class="offset-top">
+
+    <div class="tags">
+      <div class="container">
+          <p>Категории</p>
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-default btn-sm active">
+              <input type="radio" name="options" id="option1" checked> Все
+            </label>
+
+            {%get_category as categories%}
+            {%for category in categories%}
+            <label class="btn btn-default btn-sm">
+              <input type="radio" name="options" id="{{category.id}}"> <a href="{{category.get_absolute_url}}">{{category.title}}</a> 
+            </label>
+            {%endfor%}
+          </div>
+      </div>
+    </div>
+    <hr class="offset-md">
+
+    <div class="blog">
+      <div class="container">
+        <div class="row">
+          {%for post in categoryblog %}
+
+          <div class="col-sm-6 col-md-6 item" >
+            <div class="body">
+
+              <a href="{{post.photo.url}}" class="view"><i class="ion-ios-book-outline"></i></a>
+
+              <a href="{{post.get_absolute_url}}">
+                <img src="{{post.photo.url}}" title="{{post.title}}"  alt="{{post.title}}">
+              </a>
+
+              <div class="caption">
+                <h1 class="h3">{{post.title}}</h1>
+                <label> {{post.created_at}}</label>
+                <hr class="offset-sm">
+
+                <p>
+                  {{ post.content|striptags|truncatechars:150 }}      
+                          </p>
+                <hr class="offset-sm">
+                          
+                <a href="{{post.get_absolute_url}}"> Читать <i class="ion-ios-arrow-right"></i> </a>
+                <p style="margin-left: 80%;">Views ({{post.views}})</p>
+              </div>
+            </div>
+           
+          </div> {%endfor%}
+        </div>
+
+        {%if page_obj.has_other_pages%}
+        <nav>
+          <ul class="pagination">
+        {%if page_obj.has_previous %}
+        <li>
+        <a href="?page={{page_obj.previous_page_number}}" aria-label="Previous">
+        <span aria-hidden="true"><i class="ion-ios-arrow-left"></i></span>
+        </a>
+        {%endif%}
+            {%for p in paginator.page_range%}
+            {% if page_obj.number == p %}
+            <li class="active"><a href="?page={{p}}">{{p}}</a></li>
+            {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+            <li><a href="?page={{p}}">{{p}}</a></li>
+            </li>
+            {%endif%}
+            {%endfor%}
+        {%if page_obj.has_next %}
+        <li>
+        <a href="?page={{page_obj.next_page_number}}" aria-label="Next">
+        <span aria-hidden="true"><i class="ion-ios-arrow-right"></i></span>
+        </a>
+        </li>
+        {%endif%}
+          </ul>
+        </nav>
+        {%endif%}
+
+      </div>
+    </div>
+
+    <hr class="offset-lg">
+    <hr class="offset-sm">
+    <footer>
+      <div class="about">
+        <div class="container">
+          <div class="row">
+            <hr class="offset-md">
+
+            <div class="col-xs-6 col-sm-3">
+              <div class="item">
+                <i class="ion-ios-telephone-outline"></i>
+                <h1>24/7 free <br> <span>support</span></h1>
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+              <div class="item">
+                <i class="ion-ios-star-outline"></i>
+                <h1>Low price <br> <span>guarantee</span></h1>
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+              <div class="item">
+                <i class="ion-ios-gear-outline"></i>
+                <h1> Manufacturer’s <br> <span>warranty</span></h1>
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+              <div class="item">
+                <i class="ion-ios-loop"></i>
+                <h1> Full refund <br> <span>guarantee</span> </h1>
+              </div>
+            </div>
+
+            <hr class="offset-md">
+          </div>
+        </div>
+      </div>
+
+      <div class="subscribe">
+        <div class="container align-center">
+            <hr class="offset-md">
+
+            <h1 class="h3 upp">Join our newsletter</h1>
+            <p>Get more information and receive special discounts for our products.</p>
+            <hr class="offset-sm">
+
+            <form action="index.php" method="post">
+              <div class="input-group">
+                <input type="email" name="email" value="" placeholder="E-mail" required="" class="form-control">
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-primary"> Subscribe <i class="ion-android-send"></i> </button>
+                </span>
+              </div><!-- /input-group -->
+            </form>
+            <hr class="offset-lg">
+            <hr class="offset-md">
+
+            <div class="social">
+              <a href="#"><i class="ion-social-facebook"></i></a>
+              <a href="#"><i class="ion-social-twitter"></i></a>
+              <a href="#"><i class="ion-social-googleplus-outline"></i></a>
+              <a href="#"><i class="ion-social-instagram-outline"></i></a>
+              <a href="#"><i class="ion-social-linkedin-outline"></i></a>
+              <a href="#"><i class="ion-social-youtube-outline"></i></a>
+            </div>
+
+
+            <hr class="offset-md">
+            <hr class="offset-md">
+        </div>
+      </div>
+
+
+      {%endblock main%}

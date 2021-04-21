@@ -1,0 +1,118 @@
+{%extends 'base.html'%}
+{%block title%} {{title}} {%endblock title%}
+{% load crispy_forms_tags %}
+{%block main%}
+
+    <div class="blog-item">
+      <hr class="offset-lg visible-xs">
+      <hr class="offset-lg visible-xs">
+
+      <img src="{{post.photo2.url}}" alt="{{post.title}}" class="hidden-sm"  />
+
+      <div class="white">
+        <hr class="offset-md">
+        <div class="container">
+  	    	<div class="row">
+  	    		<div class="col-sm-8 col-sm-offset-2">
+  	    			<h1>{{post.title}}</h1>
+              <p> <b>{{post.author}}</b> {{post.created_at}}</p>
+  		    		 <br>
+
+  		    		 <p>
+                 {{post.content|safe}}
+  		    		 </p>
+  		    		 <br>
+  
+  		    		 <button class="btn btn-primary btn-sm facebook"> <i class="ion-social-facebook"></i> Share </button>
+  		    		 <button class="btn btn-primary btn-sm twitter"> <i class="ion-social-twitter"></i> Retweet</button>
+  		    		 <button class="btn btn-primary btn-sm googleplus"> <i class="ion-social-googleplus"></i> Plus </button>
+  	    		</div>
+  	    	</div>
+      	</div>
+        <hr class="offset-lg">
+        <hr class="offset-lg">
+      </div>
+      <hr class="offset-md">
+
+
+      <section class="product">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+              <div class="comments">
+            
+              <hr class="offset-sm hidden-xs">
+      
+                <h2 class="h3">Отзывы (#{{post.postrewiews_set.all.count}})</h2>
+                <br>
+      
+      
+                <div class="wrapper">
+                  <div class="content">
+      
+                    {%for review in post.postrewiews_set.all %}
+                    <h3>{{review.name}}</h3>
+                    <label>{{review.data}}</label>
+                    <p>
+                      {{review.text}}
+                    </p>
+                    {%endfor%}
+                    {%if  post.postrewiews_set.all.count < 1%}
+                    <p>Отзывов нету</p>
+                      {%endif%}
+                  </div>
+                </div>
+                <hr class="offset-lg">
+                <hr class="offset-md">
+                {% if request.user.is_authenticated %}
+                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#Modal-Comment"> <i class="ion-chatbox-working"></i> Добавить отзыв </button>
+                {%else%}
+                <button class="btn btn-primary btn-sm" > <i class="ion-chatbox-working"></i><a href="{%url 'registration'%}"> комментарии только для зарегистрированых</a> </button>
+                {%endif%}
+                <hr class="offset-md visible-xs">
+              </div>            
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+        
+
+    <div class="modal fade" id="Modal-Comment" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header align-center">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="ion-android-close"></i></span></button>
+            <h1 class="h4 modal-title">Добавить комментарий</h1>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              {% if request.user.is_authenticated %}
+
+            <form action="{%url 'addcomment' post.id %}" class="join"  method="POST">
+              <div class="row">
+              	<div class="col-sm-12">
+                  {% csrf_token %}
+                  {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+                  {%else%}
+                  <button > Оставлять комментарии могут только зарегистрированные пользователи</button>
+                  {%endif%}
+                	</div>
+                </div>
+              </div>
+             </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    <hr class="offset-lg">
+    <hr class="offset-sm">
+  {%endblock main%}
+
+
+
+  

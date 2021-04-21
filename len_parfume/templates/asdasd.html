@@ -1,0 +1,28 @@
+    <div class= "col-sm-6 col-md-4 product hidden-sm">
+            
+            <div class="body">
+              <a href="{%url 'add_to_whishlist' product.slug%}" class="favorites" 
+              
+              data-favorite={%get_item filter=product.id%}>
+
+              <i class="ion-ios-heart-outline"></i></a>
+              <a href="{{product.get_absolute_url}}"><img src="{{product.image1.url}}"  style="max-height: 300px;width: 90%;" alt="{{product.image1.title}}"/></a>
+
+              <div class="content">
+                <h1 class="h3">{{product.title}}</h1>
+                <p class="price">${{product.price}}</p>
+                {%if product.old_price%}
+                <p class="price through">${{product.old_price}}</p>
+                {%endif%}
+
+                {%if product.brand_name%}
+                <label>{{product.brand_name}}</label>
+                {%else%}
+                <label>{{product.category.name}}</label>
+                {%endif%}
+                <a href="{{product.get_absolute_url}}"><button class="btn btn-link"> <i class="ion-android-open"></i> Подробнее</button></a>
+                <button class="btn btn-primary btn-sm rounded"> <i class="ion-bag"></i><a href="{% url 'cart_add' product.id %}"> В корзину</a></button>
+              </div>
+            </div>
+          </div>
+          {%endfor%}

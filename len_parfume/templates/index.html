@@ -1,0 +1,348 @@
+{%extends 'base.html'%}
+{%load static%}
+{%load item_tag%}
+{%block title%} {{title}} {%endblock title%}
+{%block main%}
+
+<hr class="offset-lg">
+<hr class="offset-lg hidden-xs">
+
+<header>
+  <div class="carousel" data-count="3" data-current="1">
+
+    <div class="items">
+      <button class="btn btn-control" data-direction="right"> <i class="ion-ios-arrow-right"></i></button>
+      <button class="btn btn-control" data-direction="left"> <i class="ion-ios-arrow-left"></i></button>
+
+
+      <div class="item center" data-marker="1">
+        <img src="{% static 'img/carousel/bckg-2.jpg '%}" alt="Background" class="background hidden-xs hidden-sm"/>
+        <img src="{% static 'img/carousel/bckg-2-sm.jpg '%}" alt="Background" class="background visible-sm"/>
+        <img src="{% static 'img/carousel/bckg-2-xs.jpg '%}" alt="Background" class="background visible-xs"/>
+
+        <div class="content">
+          <div class="outside-content">
+            <div class="inside-content">
+              <div class="container align-right">
+
+                <h1 class="h3 colorful blue hidden-xs">Provide lightweight and powerull</h1>
+
+                <hr class="offset-sm">
+                <h2 class="h1 lg upp colorful blue">New amazing <br> laptops</h2>
+                <hr class="offset-md">
+                <hr class="offset-md">
+                <a href="./store/" rel="nofollow" class="btn btn-primary btn-lg black"> More laptops </a>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="item" data-marker="2">
+        <img src="{% static 'img/carousel/bckg-1.jpg '%}" alt="Background" class="background hidden-xs hidden-sm"/>
+        <img src="{% static 'img/carousel/bckg-1-sm.jpg '%}" alt="Background" class="background visible-sm"/>
+        <img src="{% static 'img/carousel/bckg-1-xs.jpg '%}" alt="Background" class="background visible-xs"/>
+
+        <img src="{{new_items.1.image1.url}}" alt="New laptops" title="New laptops" class="item-left hidden-xs"/>
+
+        <div class="content">
+          <div class="outside-content">
+            <div class="inside-content">
+              <div class="container">
+
+                <h1 class="h3 colorful blue hidden-xs">Device is designed for the creative people</h1>
+                <hr class="offset-sm">
+
+                <h2 class="h1 lg upp colorful blue">Apple <br> iMac 27 Retina</h2>
+                <hr class="offset-md">
+                <hr class="offset-md">
+                <a href="./store/" rel="nofollow" class="btn btn-primary btn-lg black"> View products </a>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="item" data-marker="3">
+        <img src="{% static 'img/carousel/bckg-3.jpg '%}" alt="Background" class="background hidden-xs hidden-sm"/>
+        <img src="{% static 'img/carousel/bckg-3-sm.jpg '%}" alt="Background" class="background visible-sm"/>
+        <img src="{% static 'img/carousel/bckg-3-xs.jpg '%}" alt="Background" class="background visible-xs"/>
+
+        <img src="{{new_items.1.image1.url}}" alt="Apple Devices" title="Apple Devices" class="item-right hidden-xs"/>
+
+        <div class="content">
+          <div class="outside-content">
+            <div class="inside-content">
+              <div class="container align-right">
+              
+                <h1 class="h3 colorful blue hidden-xs">Luxury watches, business tablets and 3D touch: <br> How Apple plans to stay ahead in mobile.</h1>
+
+                <hr class="offset-sm">
+                <h2 class="h1 lg upp colorful blue">Brand new day <br class="hidden-xs"> for business</h2>
+                <hr class="offset-md">
+                <hr class="offset-md">
+                <a href="./blog/" rel="nofollow" class="btn btn-primary btn-lg black"> View article </a>
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="markers">
+      <li data-marker="1" data-style="white" class="active"></li>
+      <li data-marker="2" data-style="white"></li>
+      <li data-marker="3" data-style="white"></li>
+    </ul>
+
+  </div>
+</header>
+<hr class="offset-lg">
+<hr class="offset-lg">
+<div class="bars">
+  <div class="container"> 
+    <div class="row">
+
+      <h2 class="h2 upp align-center"> Новинки </h2>
+
+      <div class="col-sm-6 col-md-4 no-padding padding-xs">
+        <div class="bar medium" data-background="{{new_items.0.image1.url}}">
+         <h3 class="title black">{{new_items.0.title}}</h3>
+          <div class="wrapper">
+            <div class="content">
+              <hr class="offset-sm">
+              <a href="{{new_items.0.get_absolute_url}}" rel="nofollow" class="btn btn-default black"> Купить сейчас </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-sm-6 col-md-4">
+        <div class="bar small" data-background="{{new_items.1.image1.url}}">
+          <h3 class="title black">{{new_items.1.title}}</h3>
+
+          <div class="wrapper">
+            <div class="content">
+              <hr class="offset-sm">
+              <a href="{{new_items.1.get_absolute_url}}" rel="nofollow" class="btn btn-primary black"> Купить сейчас </a>
+            </div>
+          </div>
+        </div>
+
+        <hr class="offset-xs">
+        <hr class="offset-xs">
+
+        <div class="bar small" data-background="{{new_items.2.image1.url}}">
+          <h3 class="title black">{{new_items.2.title}}</h3>
+          
+          <div class="wrapper">
+            <div class="content">
+              <hr class="offset-sm">
+              <a href="{{new_items.2.get_absolute_url}}" rel="nofollow" class="btn btn-primary black"> Купить сейчас </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4 no-padding hidden-xs hidden-sm">
+        <div class="bar medium" data-background="{{new_items.3.image1.url}}">
+          <h3 class="title black">{{new_items.3.title}}</h3>
+          
+          <div class="wrapper">
+            <div class="content">
+              <hr class="offset-sm">
+              <a href="{{new_items.3.get_absolute_url}}" rel="nofollow" class="btn btn-primary black"> Купить сейчас </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="offset-lg">
+<hr class="offset-md">
+
+
+<section class="products">
+  <div class="container">
+    <h2 class="h2 upp align-center"> Парфюмерия </h2>
+    <hr class="offset-lg">
+
+    <div class="row">
+
+
+        {%for product in parfumes%}
+      <div class="col-sm-6 col-md-4 product">
+        <div class="body">
+          <a href="{%url 'add_to_whishlist' product.slug%}" class="favorites" 
+          
+
+          data-favorite={%get_item filter=product.id%}>
+          
+          
+          <i class="ion-ios-heart-outline"></i></a>
+          <a href="{{product.get_absolute_url}}"><img src="{{product.image1.url}}"  alt="{{product.title}}"/></a>
+
+          <div class="content align-center">
+            <p class="price">${{product.price}}</p>
+            {%if product.old_price%}
+            <p class="price through">${{product.old_price}}</p>
+            {%endif%}
+            <h2 class="h3">{{product.title}}</h2>
+            <hr class="offset-sm">
+
+            <a href="{{product.get_absolute_url}}"> <button class="btn btn-link"> <i class="ion-android-open"></i>Подробнее </button></a>
+            <a href="{% url 'cart_add' product.id %}"> <button class="btn btn-primary rounded"> <i class="ion-bag"></i>В корзину</button></a>
+                     </div>
+        </div>
+      </div>
+      {%endfor%}
+  
+    </div>
+
+    <div class="align-right align-center-xs">
+      <hr class="offset-sm">
+      <a href="
+       {%for i in parfumes|slice:'1'%}
+       {{i.category.get_absolute_url}}
+       {%endfor%}
+      "> <h5 class="upp">Посмотреть всю парфюмерию </h5> </a>
+    </div>
+  </div>
+</section>
+
+<section class="products">
+  <div class="container">
+    <h2 class="h2 upp align-center"> Пробники </h2>
+    <hr class="offset-lg">
+
+    <div class="row">
+
+
+
+      {%for product in probes%}
+      <div class="col-sm-6 col-md-4 product">
+        <div class="body">
+          <a href="{%url 'add_to_whishlist' product.slug%}" class="favorites"
+          
+          data-favorite={%get_item filter=product.id%}>
+          
+          
+          <i class="ion-ios-heart-outline"></i></a>
+          <a href="{{product.get_absolute_url}}"><img src="{{product.image1.url}}" alt="{{product.title}}"/></a>
+
+          <div class="content align-center">
+            <p class="price">${{product.price}}</p>
+            {%if product.old_price%}
+            <p class="price through">${{product.old_price}}</p>
+            {%endif%}
+            <h2 class="h3">{{product.title}}</h2>
+            <hr class="offset-sm">
+
+            <a href="{{product.get_absolute_url}}"> <button class="btn btn-link"> <i class="ion-android-open"></i>Подробнее </button></a>
+            <a href="{% url 'cart_add' product.id %}"> <button class="btn btn-primary rounded"> <i class="ion-bag"></i>В корзину</button></a>
+        </div>
+      </div>
+    </div>
+
+      {%endfor%}
+
+    </div>
+    <div class="align-right align-center-xs">
+      <hr class="offset-sm">
+      <a href=" {%for i in probes|slice:'1'%}
+      {{i.category.get_absolute_url}}
+      {%endfor%}"> <h5 class="upp">Посмотреть все пробники </h5> </a>
+    </div>
+  </div>
+</section>
+
+
+<section class="products">
+  <div class="container">
+    <h2 class="h2 upp align-center">Аксессуары</h2>
+    <hr class="offset-lg">
+
+    <div class="row">
+
+      {%for product in accessories%}
+      <div class="col-sm-6 col-md-4 product">
+        <div class="body">
+          <a href="{%url 'add_to_whishlist' product.slug%}" class="favorites"
+          
+          data-favorite={%get_item filter=product.id%}>
+          
+          <i class="ion-ios-heart-outline"></i></a>
+          <a href="{{product.get_absolute_url}}"><img src="{{product.image1.url}}"  alt="{{product.title}}"/></a>
+
+          <div class="content align-center">
+            <p class="price">${{product.price}}</p>
+            {%if product.old_price%}
+            <p class="price through">${{product.old_price}}</p>
+            {%endif%}
+            <h2 class="h3">{{product.title}}</h2>
+            <hr class="offset-sm">
+
+            <a href="{{product.get_absolute_url}}"> <button class="btn btn-link"> <i class="ion-android-open"></i>Подробнее </button></a>
+            <a href="{% url 'cart_add' product.id %}"> <button class="btn btn-primary rounded"> <i class="ion-bag"></i>В корзину</button></a>
+        </div>
+      </div>        </div>
+
+      {%endfor%}
+
+    </div>
+    <div class="align-right align-center-xs">
+      <hr class="offset-sm">
+      <a href=" {%for i in accessories|slice:'1'%}
+      {{i.category.get_absolute_url}}
+      {%endfor%}"> <h5 class="upp">Посмотреть все аксессуары </h5> </a>
+    </div>
+  </div>
+</section>
+
+
+<section class="blog">
+  <div class="container">
+    <h2 class="h2 upp align-center"> Наш Блог </h2>
+    <hr class="offset-lg">
+
+    <div class="row">
+
+{%for post in posts%}
+      <div class="col-sm-6 col-md-6 item">
+        <div class="body">
+          <a href="{{post.get_absolute_url}}" class="view" ><i class="ion-ios-book-outline"></i></a>
+          <a href="{{post.get_absolute_url}}">
+            <img src="{{post.photo.url}}"  title="{{post.title}}" alt="{{post.title}}">
+          </a>
+
+          <div class="caption">
+            <h2 class="h3">{{post.title}}</h2>
+            <label>{{post.created_at}}</label>
+            <hr class="offset-sm">
+
+            <p>
+              {{post.preview|striptags|truncatechars:200}}
+            </p>
+            <hr class="offset-sm">
+            <a href="{{post.get_absolute_url}}"> Читать статью </a>
+          </div>
+        </div>
+      </div>
+{%endfor%}
+     
+
+    </div>
+
+    <div class="align-right align-center-xs">
+      <hr class="offset-sm">
+      <a href="{%url 'blog'%}"> <h5 class="upp"> Смотерть все статьи </h5> </a>
+    </div>
+  </div>
+</section>
+
+
+{%endblock main%}
