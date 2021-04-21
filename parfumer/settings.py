@@ -164,7 +164,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'len_parfume/static'),
 )
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
