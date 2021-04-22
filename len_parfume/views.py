@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string,get_template
+from django.http import Http404
 from .utils import CusomerMixin,FinalPrice
 from .models import *
 from blog.models import Post
@@ -14,12 +15,17 @@ from .forms import RegistrationForm,LoginForm,ReviewsForm,OrderForm
 from specs.models import ProductFeatures
 from cart.cart import Cart
 
+
 def custom_404(request):
-    return render(request, '404.html', {}, status=404)
+    return render(request, '404/404.html', {}, status=404)
+
 
 def cart_add(request, id):
     cart = Cart(request)
-    product = Product.objects.get(id=id)
+    try:
+        product = Product.objects.get(id=id)
+    except Product.DoesNotExist:
+        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
     cart.add(product=product)
     messages.add_message(request,messages.SUCCESS,'Товар добавлен в избранноe')
     return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
@@ -28,21 +34,30 @@ def cart_add(request, id):
 
 def item_clear(request, id):
     cart = Cart(request)
-    product = Product.objects.get(id=id)
+    try:
+        product = Product.objects.get(id=id)
+    except Product.DoesNotExist:
+        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
     cart.remove(product)
     return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
 
 
 def item_increment(request, id):
     cart = Cart(request)
-    product = Product.objects.get(id=id)
+    try:
+        product = Product.objects.get(id=id)
+    except Product.DoesNotExist:
+        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
     cart.add(product=product)
     return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
     
 
 def item_decrement(request, id):
     cart = Cart(request)
-    product = Product.objects.get(id=id)
+    try:
+        product = Product.objects.get(id=id)
+    except Product.DoesNotExist:
+        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
     cart.decrement(product=product)
     return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
 
@@ -255,8 +270,10 @@ class CategorytDetailView(DetailView):
 class AddtoWhishlistView(View):
     def get(self,request,*args,**kwargs):
         product_slug= kwargs.get('slug')
-        product= Product.objects.get(slug=product_slug)
-    
+        try:
+            product= Product.objects.get(slug=product_slug)
+        except Product.DoesNotExist:
+            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
         if request.user.is_authenticated:
             user = request.user
             # Whishlist.objects.get_or_create(owner=user,products=product)
@@ -304,20 +321,22 @@ class DeleteFromWhislist(View):
     def get(self,request,*args,**kwargs):
 
         product_slug=kwargs.get('slug')
-        product= Product.objects.get(slug=product_slug)
-
+        try:
+            product= Product.objects.get(slug=product_slug)
+        except Product.DoesNotExist:
+            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
         if request.user.is_authenticated:
             name = request.user
             user = User.objects.filter(username=name).first()
             try:
                 Whishlist.objects.get(owner=user,products=product).delete()
-            except:
+            except Whishlist.DoesNotExist:
                 return HttpResponseRedirect('/whishlist/')
         else:
             name = str(request.session.session_key)
             try:
                 Whishlist.objects.get(session=name,products=product).delete()
-            except:
+            except Whishlist.DoesNotExist:
                 return HttpResponseRedirect('/whishlist/')
 
         # messages.add_message(request,messages.INFO,'Товар удален из избранного')
@@ -332,12 +351,12 @@ class SearchProduct(ListView):
 
     def get_queryset(self):
         search= self.request.GET.get('search')
-        print('поиск ',search)
+        # print('поиск ',search)
         if search:
             if search[0].lower():
                 search=search.title()
                 products=Product.objects.filter(title__icontains=search,available=True)
-                print(products)
+                # print(products)
                 return products
 
         else:
@@ -405,12 +424,15 @@ class AllProducts(ListView):
 class AddReview(View):
     def post(self,request,id):
         if request.user.is_authenticated:
-            product = Product.objects.get(id=id)
+            try:
+                product = Product.objects.get(id=id)
+            except Product.DoesNotExist:
+                return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
             last = product.rewiews_set.last()
             form=ReviewsForm(request.POST or None)
             if  form.is_valid() :
                 form=form.save(commit=False)
-                if form.revId == last.revId:
+                if last and form.revId == last.revId:
                     return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
                 form.name = request.user.username
                 form.product=product

@@ -175,48 +175,17 @@
         <!--/.container-fluid -->
     </nav>
 
-
-
-
-
     {% if messages %}
 
       {% for message in messages %}
       
-    
-
       {% endfor %}
     
     {% endif %}
 {%block main%} {%endblock main%}
 
-{%if page_obj.has_other_pages%}
-<nav>
-  <ul class="pagination">
-{%if page_obj.has_previous %}
-<li>
-<a href="?page={{page_obj.previous_page_number}}" aria-label="Previous">
-<span aria-hidden="true"><i class="ion-ios-arrow-left"></i></span>
-</a>
-{%endif%}
-    {%for p in paginator.page_range%}
-    {% if page_obj.number == p %}
-    <li class="active"><a href="?page={{p}}">{{p}}</a></li>
-    {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
-    <li><a href="?page={{p}}">{{p}}</a></li>
-    </li>
-    {%endif%}
-    {%endfor%}
-{%if page_obj.has_next %}
-<li>
-<a href="?page={{page_obj.next_page_number}}" aria-label="Next">
-<span aria-hidden="true"><i class="ion-ios-arrow-right"></i></span>
-</a>
-</li>
-{%endif%}
-  </ul>
-</nav>
-{%endif%}
+
+{%include 'inc/_pagination.html'%}
 
     <hr class="offset-lg">
     <hr class="offset-sm">

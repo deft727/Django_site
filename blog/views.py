@@ -43,7 +43,7 @@ class BlogAddReview(View):
             form=ReviewsForm(request.POST or None)
             if  form.is_valid():
                 form=form.save(commit=False)
-                if lastPost.postId == form.postId:
+                if lastPost and lastPost.postId == form.postId:
                     return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
                 form.name = request.user.username
                 form.post=post

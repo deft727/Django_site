@@ -10,7 +10,7 @@ register = template.Library()
 
 @register.filter
 def product_spec(category):
-    print(category,'category')
+    # print(category,'category')
     if category:
         product_features = ProductFeatures.objects.filter(product__category=category)
     else:
