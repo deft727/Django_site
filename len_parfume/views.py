@@ -28,7 +28,10 @@ def cart_add(request, id):
         return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
     cart.add(product=product)
     messages.add_message(request,messages.SUCCESS,'Товар добавлен в избранноe')
-    return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+    try:
+        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+    except:
+        return redirect('home')
 
 
 
@@ -37,9 +40,15 @@ def item_clear(request, id):
     try:
         product = Product.objects.get(id=id)
     except Product.DoesNotExist:
-        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+        try:
+            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+        except:
+            return redirect('home')
     cart.remove(product)
-    return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+    try:
+        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+    except:
+        return redirect('home')
 
 
 def item_increment(request, id):
@@ -47,9 +56,15 @@ def item_increment(request, id):
     try:
         product = Product.objects.get(id=id)
     except Product.DoesNotExist:
-        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+        try:
+            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+        except:
+            return redirect('home')
     cart.add(product=product)
-    return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+    try:
+        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+    except:
+        return redirect('home')
     
 
 def item_decrement(request, id):
@@ -57,19 +72,31 @@ def item_decrement(request, id):
     try:
         product = Product.objects.get(id=id)
     except Product.DoesNotExist:
-        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+        try:
+            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+        except:
+            return redirect('home')
     cart.decrement(product=product)
-    return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+    try:
+        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+    except:
+        return redirect('home')
 
 
 def cart_clear(request):
     cart = Cart(request)
     cart.clear()
-    return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+    try:
+        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+    except:
+        return redirect('home')
 
 
 def cart_detail(request):
-    return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+    try:
+        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+    except:
+        return redirect('home')
 
 
 
@@ -273,7 +300,10 @@ class AddtoWhishlistView(View):
         try:
             product= Product.objects.get(slug=product_slug)
         except Product.DoesNotExist:
-            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+            try:
+                return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+            except:
+                return redirect('home')
         if request.user.is_authenticated:
             user = request.user
             # Whishlist.objects.get_or_create(owner=user,products=product)
@@ -295,7 +325,10 @@ class AddtoWhishlistView(View):
                 new_whish = Whishlist(session=name,products=product,whishlist=True)
                 new_whish.save()
 
-        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+        try:
+            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+        except:
+            return redirect('home')
 
     
 
@@ -324,7 +357,10 @@ class DeleteFromWhislist(View):
         try:
             product= Product.objects.get(slug=product_slug)
         except Product.DoesNotExist:
-            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+            try:
+                return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+            except:
+                return redirect('home')
         if request.user.is_authenticated:
             name = request.user
             user = User.objects.filter(username=name).first()
@@ -360,7 +396,10 @@ class SearchProduct(ListView):
                 return products
 
         else:
-            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+            try:
+                return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+            except:
+                return redirect('home')
     
     def get_context_data(self,*,object_list=None,**kwargs):
         context = super().get_context_data(**kwargs)
@@ -427,17 +466,26 @@ class AddReview(View):
             try:
                 product = Product.objects.get(id=id)
             except Product.DoesNotExist:
-                return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+                try:
+                    return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+                except:
+                    return redirect('home')
             last = product.rewiews_set.last()
             form=ReviewsForm(request.POST or None)
             if  form.is_valid() :
                 form=form.save(commit=False)
                 if last and form.revId == last.revId:
-                    return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+                    try:
+                        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+                    except:
+                        return redirect('home')
                 form.name = request.user.username
                 form.product=product
                 form.save()
-            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+            try:
+                return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+            except:
+                return redirect('home')
         else:
             return redirect('login')
 

@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1)z*tl$)==3&lh0$!t(vqzqios^wwocrxfo^m%(ml$=x-j5g+8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*',]
 
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-                'storages',
+        'storages',
         'len_parfume.apps.LenParfumeConfig',
         'specs.apps.SpecsConfig',
         'blog.apps.BlogConfig',
@@ -87,24 +87,24 @@ WSGI_APPLICATION = 'parfumer.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ecom_db',
-        'USER': 'kirill',
-        'PASSWORD' : 'devpass1',
-        'HOST' : 'localhost',
-        'PORT': 5432
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'ecom_db',
+#         'USER': 'kirill',
+#         'PASSWORD' : 'devpass1',
+#         'HOST' : 'localhost',
+#         'PORT': 5432
+#     }
+# }
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -176,13 +176,13 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 # #############################################################################
 
 
-AWS_ACCESS_KEY_ID = 'AKIAYSVUBCGEK2QQAKNU'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'zarj09-crm-bucket'
-AWS_S3_FILE_OVERWRITE = True
-AWS_DEFAULT_ACL = None
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_S3_REGION_NAME = "us-east-2"
+# AWS_ACCESS_KEY_ID = 'AKIAYSVUBCGEK2QQAKNU'
+# AWS_SECRET_ACCESS_KEY = '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'
+# AWS_STORAGE_BUCKET_NAME = 'zarj09-crm-bucket'
+# AWS_S3_FILE_OVERWRITE = True
+# AWS_DEFAULT_ACL = None
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS_S3_REGION_NAME = "us-east-2"
 
 
 # #############################################################################
