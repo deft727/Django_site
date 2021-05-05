@@ -234,7 +234,7 @@ class Order(models.Model):
     cartproduct = models.ManyToManyField('CartProduct', blank=True)
     final_price = models.DecimalField(max_digits=10,decimal_places=2,verbose_name='Общая сумма')
     email= models.EmailField(max_length=60, verbose_name='Емайл')
-    phone = PhoneNumberField(verbose_name=' Номер телефона', null=True)
+    phone = PhoneNumberField(verbose_name=' Номер телефона')
     adress = models.CharField(max_length=60, verbose_name='Город')
     otdel = models.CharField(max_length=20,verbose_name='Отделение')
     status = models.CharField(
