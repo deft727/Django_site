@@ -22,12 +22,9 @@
                         <div class="col-lg-12">
                             <form id="login-form" method="POST" role="form" style="display: block;">
                                 {%csrf_token%}
-
                                 {{form|crispy}}
-
-        <p class="font-weight-light"><a href="">Забыли пароль?</a> </p>
- 
-
+        <p class="font-weight-light"><a href="{%url 'pass-reset' %}">Забыли пароль?</a> </p>
+        
                                     <div class="row">     
 
                                         <div class="col-sm-6 col-sm-offset-3">

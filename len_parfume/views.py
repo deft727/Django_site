@@ -25,9 +25,12 @@ def cart_add(request, id):
     try:
         product = Product.objects.get(id=id)
     except Product.DoesNotExist:
-        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
-    cart.add(product=product)
+        try:
+            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+        except:
+            return redirect('home')
     messages.add_message(request,messages.SUCCESS,'Товар добавлен в избранноe')
+    cart.add(product=product)
     try:
         return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
     except:
@@ -102,7 +105,7 @@ def cart_detail(request):
 
 class IndexView(CusomerMixin,View):
     def get(self,request,*args,**kwargs):
-        products = Product.objects.filter(available=True)
+        products = Product.objects.filter(available=True).select_related('category')
         new_item = products.filter(in_top=True).order_by('-pk')[:4]
         parfumes = products.filter(category__name='Парфюмерия')[:6]
         probes = products.filter(category__name='Пробники')[:6]
@@ -248,28 +251,28 @@ class CategorytDetailView(DetailView):
         context['categories'] = self.model.objects.all()
         context['title']=self.get_object().name
         page_number = self.request.GET.get('page',1) 
-        
+        addSort =''
         if not query and  not self.request.GET :
-            print(' not querly')
+            # print(' not querly')
             products= category.product_set.all().filter(available=True)
-            paginator = Paginator(products,8)
+            paginator = Paginator(products,9)
             page =paginator.get_page(page_number) 
             context['category_products'] = page
             context['page']= page
             return context
 
         if query:
-            print('querly')
+            # print('querly')
             products = category.product_set.filter(Q(title__icontains=query),available=True)
-            paginator = Paginator(products, 1)
+            paginator = Paginator(products, 9)
             page =paginator.get_page(page_number) 
             context['category_products'] = page
             context['page']= page
             return context
 
         url_kwargs = {}
-        if self.request.GET and not self.request.GET.get('page'):
-            print('self')
+        if self.request.GET:
+            # print('self')
             for item in self.request.GET:
                 if len(self.request.GET.getlist(item)) > 1:
                     url_kwargs[item] = self.request.GET.getlist(item)
@@ -284,10 +287,8 @@ class CategorytDetailView(DetailView):
             pf = ProductFeatures.objects.filter(
                 q_condition_queries
             ).prefetch_related('product', 'feature').values('product_id')
-
-            products = Product.objects.filter(id__in=[pf_['product_id'] for pf_ in pf],available=True)
-
-            paginator = Paginator(products, 8)
+            products = Product.objects.filter(id__in=[pf_['product_id'] for pf_ in pf],category=self.get_object(),available=True)
+            paginator = Paginator(products, 9)
             page =paginator.get_page(page_number) 
             context['category_products'] = page
             context['page']= page
@@ -404,23 +405,8 @@ class SearchProduct(ListView):
     def get_context_data(self,*,object_list=None,**kwargs):
         context = super().get_context_data(**kwargs)
         context['title']='Поиск по сайту: '+str(self.request.GET.get('search'))
-        context['s']=f"s={self.request.GET.get('search')}&"
+        context['search']=f"&search={self.request.GET.get('search')}"
         return context
-
-
-# class AllProducts(ListView):
-
-#     template_name = 'products.html'
-#     context_object_name = 'products'
-#     # paginate_by = 9
-
-#     return Product.objects.all()
-    
-#     def get_context_data(self,*,object_list=None,**kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['title']='Все товары'
-#         return context
-
 
 
 class AllProducts(ListView):
@@ -430,12 +416,13 @@ class AllProducts(ListView):
     template_name = 'products.html'
     slug_url_kwarg = 'slug'
     allow_empty=False
-    paginate_by=9
+    paginate_by= 24
     extra_context = {'title':'Все товары'}
 
     def get_queryset(self, **kwargs):
         
         url_kwargs = {}
+        
         if self.request.GET and not self.request.GET.get('page'):
             for item in self.request.GET:
                 if len(self.request.GET.getlist(item)) > 1:
@@ -453,10 +440,10 @@ class AllProducts(ListView):
                 pf = ProductFeatures.objects.filter(
                     q_condition_queries
                 ).prefetch_related('product', 'feature').values('product_id')
-                products = Product.objects.filter(id__in=[pf_['product_id'] for pf_ in pf])
+                products = Product.objects.filter(id__in=[pf_['product_id'] for pf_ in pf]).select_related('category')
                 return products
         else:
-            products = Product.objects.all()
+            products = Product.objects.all().select_related('category')
             return products
 
 
@@ -470,15 +457,16 @@ class AddReview(View):
                     return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
                 except:
                     return redirect('home')
-            last = product.rewiews_set.last()
+            last = Rewiews.objects.first()
             form=ReviewsForm(request.POST or None)
-            if  form.is_valid() :
+            if  form.is_valid():
                 form=form.save(commit=False)
-                if last and form.revId == last.revId:
-                    try:
-                        return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
-                    except:
-                        return redirect('home')
+                if last:
+                    if form.revId == last.revId or form.text == last.text:
+                        try:
+                            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+                        except:
+                            return redirect('home')
                 form.name = request.user.username
                 form.product=product
                 form.save()
@@ -488,7 +476,6 @@ class AddReview(View):
                 return redirect('home')
         else:
             return redirect('login')
-
 
 
 class MakeOrderView(CusomerMixin,FinalPrice,View):

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Rewiews,Order
+from phonenumber_field.formfields import PhoneNumberField
 
 
 class RegistrationForm(forms.ModelForm):
@@ -88,7 +89,8 @@ class ReviewsForm(forms.ModelForm):
 
 
 class OrderForm(forms.ModelForm):
-
+    phone =  PhoneNumberField(widget=forms.TextInput(attrs={'placeholder': '+380-00-00-00-00'}), 
+                       label="Номер телефона", required=True)
     class Meta:
         model= Order
         fields = (

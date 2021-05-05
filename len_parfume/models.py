@@ -7,6 +7,7 @@ import sys
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import uuid
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 User=get_user_model()
@@ -23,11 +24,12 @@ class Category(models.Model):
     name = models.CharField(max_length=250,verbose_name='Имя категории')
     slug = models.SlugField(unique=True)
 
+    def get_absolute_url(self):
+        return reverse('category_detail',kwargs={'slug':self.slug})
+
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse('category_detail',kwargs={'slug': self.slug})
 
 
 class Size(models.Model):
@@ -61,13 +63,11 @@ class Product(models.Model):
     description = models.TextField(verbose_name='Описание товара',null=True)
     price = models.DecimalField(max_digits=10,decimal_places=2,verbose_name='Цена')
     old_price = models.DecimalField(max_digits=10,decimal_places=2,verbose_name='Старая Цена',null=True,blank=True)
-    brand =  models.ImageField(verbose_name='Фото бренда если есть',upload_to='brands/photos/%Y/%m/%d/',null=True,blank=True)
-    brand_name = models.CharField(max_length=50,verbose_name='Название бренда',null=True,blank=True)
     views = models.IntegerField (default=0,verbose_name='Кол-во просмотров')
     in_top = models.BooleanField(default=False,verbose_name="В новинках?")
 
     def get_absolute_url(self):
-        return reverse('product_detail',kwargs={'slug': self.slug})
+        return reverse('product_detail',kwargs={'slug':self.slug})
         
     def __str__(self):
         return self.title
@@ -233,10 +233,10 @@ class Order(models.Model):
     last_name = models.CharField(max_length=255, verbose_name='Фамилия')
     cartproduct = models.ManyToManyField('CartProduct', blank=True)
     final_price = models.DecimalField(max_digits=10,decimal_places=2,verbose_name='Общая сумма')
-    email= models.EmailField(max_length=60, verbose_name='Емайл', null=True, blank=True)
-    phone = models.CharField(max_length=20, verbose_name='Телефон',help_text="+38-050-111-11-11")
-    adress = models.CharField(max_length=60, verbose_name='Город', null=True, blank=True)
-    otdel = models.CharField(max_length=20,verbose_name='Отделение', null=True, blank=True)
+    email= models.EmailField(max_length=60, verbose_name='Емайл')
+    phone = PhoneNumberField(verbose_name=' Номер телефона')
+    adress = models.CharField(max_length=60, verbose_name='Город')
+    otdel = models.CharField(max_length=20,verbose_name='Отделение')
     status = models.CharField(
         max_length=100,
         verbose_name='Статус заказа',
@@ -295,6 +295,8 @@ class Rewiews(models.Model):
         verbose_name='Отзыв'
         verbose_name_plural='Отзывы'
         ordering = ['-data',]
+
+
 
 
 

@@ -15,7 +15,7 @@ User=get_user_model()
 
 
 
-class Category(models.Model):
+class CategoryBlog(models.Model):
     title = models.CharField(max_length=255,verbose_name='Название категории')
     slug = models.SlugField(max_length=220,verbose_name='Url категории',unique=True)
 
@@ -28,7 +28,7 @@ class Category(models.Model):
         ordering = ['title']
 
     def get_absolute_url(self):
-        return reverse('category',kwargs={"slug":self.slug})
+        return reverse('categoryblog',kwargs={"slug":self.slug})
 
 
 class Post(models.Model):
@@ -39,14 +39,14 @@ class Post(models.Model):
         ordering = ['-created_at']
 
     title = models.CharField(max_length=255,verbose_name='Название статьи')
-    category = models.ForeignKey(Category,on_delete=models.PROTECT,related_name='posts',verbose_name='Категория')
+    category = models.ForeignKey(CategoryBlog,on_delete=models.PROTECT,related_name='posts',verbose_name='Категория')
     slug = models.SlugField(max_length=220,verbose_name='slug статьи',unique=True)
     author = models.CharField(max_length=100,default='Админ',null=True,blank=True)
     preview = models.CharField(max_length=200,default='Какойто текст начала статьи',null=True,blank=True)
     content = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Опубликовано')
-    photo = ResizedImageField(size=[800, 446],crop=['middle', 'center'],verbose_name='Главное изображение',quality=95,upload_to='blog/photos/%Y/%m/%d/')
-    photo2 = ResizedImageField(size=[1920, 786],crop=['middle', 'center'],verbose_name='изображение в топ',quality=95,upload_to='blog/photos/%Y/%m/%d/')
+    photo = ResizedImageField(size=[800, 446],crop=['middle', 'center'],verbose_name='Главное изображение',quality=90,upload_to='blog/photos/%Y/%m/%d/')
+    photo2 = ResizedImageField(size=[1920, 786],crop=['middle', 'center'],verbose_name='изображение в топ',quality=99,upload_to='blog/photos/%Y/%m/%d/')
     views = models.IntegerField (default=0,verbose_name='Кол-во просмотров')
     is_publish = models.BooleanField(default=True,verbose_name='Публиковать?')
     

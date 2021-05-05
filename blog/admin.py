@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from .models import Post,Category
+from .models import Post,CategoryBlog
 from ckeditor.widgets import CKEditorWidget
 
 
@@ -15,9 +15,9 @@ class PostAdmin(admin.ModelAdmin):
     form = PostAdminForm
 
 
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryBlogAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':("title",)}
 
 
 admin.site.register(Post,PostAdmin)
-admin.site.register(Category,CategoryAdmin)
+admin.site.register(CategoryBlog,CategoryBlogAdmin)

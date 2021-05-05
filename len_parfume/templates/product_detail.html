@@ -68,7 +68,7 @@
             {% for f_name, f_value in product.get_features.items %}
               <tr>
                 <th scope="row">{{ f_name }}</th>
-                <td> {{f_value}} </td>
+                <td><a href="/products/?{{ f_name }}={{f_value}}"> {{f_value}} </a></td>
               </tr>
             {% endfor %}
             </tbody>

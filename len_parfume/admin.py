@@ -23,6 +23,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display= ( 'id','title', 'category', 'price', 'available')
     list_display_links=('id','title')
     list_editable=('available',)
+    change_form_template = 'custom_admin/change_form.html'
     form = ProductAdminForm
     search_fields=('title',)
     readonly_fields = ('views',)

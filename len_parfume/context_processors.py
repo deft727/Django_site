@@ -1,4 +1,5 @@
 from .models import Product,Category,Whishlist
+from django.db.models import Count
 from django.template import context_processors
 import uuid
 
@@ -7,7 +8,7 @@ import uuid
 # from django.core.cache import cache
 
 def single_well_info(request):
-    categories = Category.objects.all()
+    categories = Category.objects.annotate(cnt=Count('product')).filter(cnt__gt=0)
     if not request.user.is_authenticated and not request.session.session_key:
         request.session.create()
     if request.user.is_authenticated:

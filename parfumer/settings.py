@@ -40,13 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-                'storages',
+        'storages',
         'len_parfume.apps.LenParfumeConfig',
         'specs.apps.SpecsConfig',
         'blog.apps.BlogConfig',
         'cart',
+        'phonenumber_field',
         'crispy_forms',
-        'ckeditor'
+        'ckeditor',
+        # 'debug_toolbar',
+
 ]
 
 MIDDLEWARE = [
@@ -54,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -198,5 +202,12 @@ CART_SESSION_ID = 'cart'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+PHONENUMBER_DEFAULT_REGION = "UA"
+
 
 django_heroku.settings(locals())
+
+
+# INTERNAL_IPS = [
+#     '127.0.0.1',
+# ]

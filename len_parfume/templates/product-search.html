@@ -32,8 +32,8 @@
         <div class="item">
           {% block productfilter %}
         <hr>
-        <form action="{% url 'category_detail' slug='all' %}" method="GET">
-            {{ category|product_spec }}
+        <form action="{% url 'products'  %}" method="GET">
+          {{ category|product_spec }}
         <p class="text-center">
             <button class="btn btn-outline-success" type="submit">Поиск</button>
             <button class="btn btn-outline-info" type="submit">Сбросить</button>

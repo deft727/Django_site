@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.views.static import serve 
 from django.conf.urls import url
+import debug_toolbar
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,8 +13,10 @@ urlpatterns = [
     path('blog/',include('blog.urls')),
     path('product-specs/', include('specs.urls')),
     url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}), 
-    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
+    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ]
+
+
 # git push -m origin main  
 #  git push heroku develop:master 
 # git push -f heroku masterbranch:masterbranch 
@@ -26,3 +29,4 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += path('__debug__/', include(debug_toolbar.urls)),

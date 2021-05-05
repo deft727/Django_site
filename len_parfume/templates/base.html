@@ -21,6 +21,7 @@
     <!-- Bootstrap -->
     <link href="{% static 'css/bootstrap.css '%}" rel="stylesheet">
     <link href="{% static 'css/custom.css '%}" rel="stylesheet">
+    <link href="{% static 'css/toast.css'%}" rel="stylesheet">
     <link href="{% static 'css/carousel.css '%}" rel="stylesheet">
     <link href="{% static 'css/notice.css '%}" rel="stylesheet">
     <link href="{% static 'css/carousel-product.css'%}" rel="stylesheet"> 
@@ -28,6 +29,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css ">
     <link href='https://fonts.googleapis.com/css?family=Catamaran:400,100,300' rel='stylesheet' type='text/css'>
     <link href="{% static 'css/custom-scroll/jquery.mCustomScrollbar.css '%}" rel="stylesheet">
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -101,7 +103,12 @@
     <div class="toplinks">
       {%if request.user.is_authenticated%}
       <a href="{%url 'logout'%}"> Выйти </a>
+      {% if request.user.username == 'admin' %}
+      <a href="/admin" > <i class="ion-person"></i>  {{request.user.username}}</a>
+      {%else%}
       <a href="{%url 'profile'%}" > <i class="ion-person"></i>  {{request.user.username}}</a>
+      {%endif%}
+      
       {%else%}
       <a href="{%url 'registration' %}" > <i class="ion-person"></i>Регистрация</a>
       <a href="{%url 'login'%}" > <i class="ion-unlocked"></i>Вход</a>
@@ -178,7 +185,10 @@
     {% if messages %}
 
       {% for message in messages %}
-      
+      <div class="toast">
+        {{message}}
+        <button class="toast__close" type="button">&times;</button>
+        </div>
       {% endfor %}
     
     {% endif %}
@@ -323,7 +333,7 @@
 
               <address>
                 <strong>Support</strong><br>
-                <a href="mailto:#">sup@example.com</a>
+                <a href="mailto:len.parfums@gmail.com">e-mail</a>
               </address>
 
           </div>
@@ -493,6 +503,7 @@
     <script type="text/javascript" src="{% static 'js/core.js '%}"></script>
     <script type="text/javascript" src="{% static 'js/store.js '%}"></script>
     <script type="text/javascript" src="{% static 'js/carousel.js '%}"></script>
+    <script src="{% static 'js/toast.js'%}"></script>
     <script src="{% static 'js/carousel-product.js'%}"></script>
     <script type="text/javascript" src="{% static 'js/jquery.touchSwipe.min.js '%}"></script>
     <script type="text/javascript" src="{% static 'js/custom-scroll/jquery.mCustomScrollbar.concat.min.js '%}"></script>

@@ -14,7 +14,7 @@ class IndexBlogView(ListView):
     model = Post
     template_name='blog-index.html'
     context_object_name = 'postsblog'
-    paginate_by=4
+    paginate_by=8
     def get_context_data(self,*,object_list=None,**kwargs):
         context = super().get_context_data(**kwargs)
         context['title']= "Блог"
@@ -39,26 +39,33 @@ class BlogAddReview(View):
     def post(self,request,id):
         if request.user.is_authenticated:
             post = Post.objects.get(id=id)
-            lastPost = PostRewiews.objects.last()
+            lastPost = PostRewiews.objects.first()
             form=ReviewsForm(request.POST or None)
             if  form.is_valid():
                 form=form.save(commit=False)
-                if lastPost and lastPost.postId == form.postId:
-                    return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+                if lastPost:
+                    if lastPost.postId == form.postId or post.postrewiews_set.first().text == form.text :
+                        try:
+                            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+                        except:
+                            return redirect('blog')
                 form.name = request.user.username
                 form.post=post
                 form.save()
-            return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+            try:
+                return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+            except:
+                return redirect('blog')
         else:
             return redirect('login')
 
 
 class BlogCategory(ListView):
-    model = Category
+    model = CategoryBlog
     template_name='blog-category.html'
     context_object_name = 'categoryblog'
     slug_url_kwarg = 'slug'
-
+    paginate_by=8
     def get_queryset(self,**kwargs):
         return Post.objects.filter(category__slug=self.kwargs['slug'], is_publish=True)
 

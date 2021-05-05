@@ -15,7 +15,7 @@
         <div class="item">
           {% block productfilter %}
         <hr>
-        <form action="{% url 'category_detail' slug=category.slug %}" method="GET">
+        <form action="{% url 'category_detail' slug=category.slug %}" method="GET" name='filter'>
             {{ category|product_spec }}
         <p class="text-center">
             <button class="btn btn-outline-success" type="submit">Поиск</button>
@@ -38,7 +38,7 @@
       <div class="products">
         <div class="row">
 
-          {%for product in category_products.object_list%}
+          {%for product in category_products.object_list %}
           <div class="col-sm-6 col-md-4 product">
             <div class="body">
               <a href="{%url 'add_to_whishlist' product.slug%}" class="favorites" data-favorite="inactive"><i class="ion-ios-heart-outline"></i></a>
