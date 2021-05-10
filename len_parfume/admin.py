@@ -1,9 +1,12 @@
 from django import forms
 from django.contrib import admin
 from ckeditor.widgets import CKEditorWidget
-
+from specs.models import  ProductFeatures
 from .models import *
 
+class RecipeInline(admin.StackedInline):
+    model =  ProductFeatures
+    extra = 1
 
 class ProductAdminForm(forms.ModelForm):
     description = forms.CharField(widget=CKEditorWidget(),label='Описание')
@@ -27,7 +30,7 @@ class ProductAdmin(admin.ModelAdmin):
     form = ProductAdminForm
     search_fields=('title',)
     readonly_fields = ('views',)
-
+    inlines=[RecipeInline]
 
 class TagAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':("title",)}

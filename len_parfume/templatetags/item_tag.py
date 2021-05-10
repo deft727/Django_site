@@ -12,17 +12,18 @@ def get_item(context,filter):
     if not filter:
         return mark_safe("inactive")
     else:
-        product=Product.objects.get(id=filter)
+
+        # product=Product.objects.get(id=filter)
         if request.user.is_authenticated:
-            user = User.objects.filter(username=request.user).first()
-            x=Whishlist.objects.filter(owner=user,products=product)
+            # user = User.objects.filter(username=request.user).first()
+            x=Whishlist.objects.filter(owner=request.user,products__id=filter).exists()
             if x:
                 return mark_safe("active")
             else:
                 return mark_safe("inactive")
         else:
             name = str(request.session.session_key)
-            x=Whishlist.objects.filter(session=name,products=product)
+            x=Whishlist.objects.filter(session=name,products__id=filter).exists()
             if x:
                 return mark_safe("active")
             else:

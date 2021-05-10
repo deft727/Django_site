@@ -106,10 +106,11 @@ def cart_detail(request):
 class IndexView(CusomerMixin,View):
     def get(self,request,*args,**kwargs):
         products = Product.objects.filter(available=True).select_related('category')
-        new_item = products.filter(in_top=True).order_by('-pk')[:4]
-        parfumes = products.filter(category__name='Парфюмерия')[:6]
-        probes = products.filter(category__name='Пробники')[:6]
-        accessories = products.filter(category__name='Аксессуары')[:6]
+        new_item = list(Product.objects.filter(in_top=True).order_by('-pk')[:4])
+        #  products.filter(in_top=True).order_by('-pk')[:4]
+        parfumes = list(Product.objects.filter(category__name='Парфюмерия').select_related('category')[:6])
+        probes = list(products.filter(category__name='Пробники')[:6])
+        accessories = list(products.filter(category__name='Аксессуары')[:6])
         title = 'Elena-Shop :: Parfume storage'
         blog = Post.objects.filter(is_publish=True).order_by('-pk')[:2]
         context= {
@@ -230,9 +231,8 @@ class ProductDetailView(DetailView):
         s=ProductFeatures.objects.filter(product=self.get_object()).first()
         items = Product.objects.filter(Q(features=s),~Q(title=self.get_object().title)).distinct()[:4]
         context['form'] = ReviewsForm(self.request.POST or None)
-        context['items']=items
+        # context['items']=items
         context['title'] = self.get_object().title
-        category=self.get_object().category
         return context
 
 
