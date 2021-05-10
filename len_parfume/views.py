@@ -235,6 +235,8 @@ class ProductDetailView(DetailView):
         context['title'] = self.get_object().title
         return context
 
+    # def get_queryset(self):
+    #     return Product.objects.filter(slug=self.kwargs.get("slug")).select_related('product__rewiews')
 
 class CategorytDetailView(DetailView):
     model = Category
