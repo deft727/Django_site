@@ -30,6 +30,7 @@ urlpatterns = [
             path('passwod-reset/done/',authViews.PasswordResetDoneView.as_view(template_name="password_reset_done.html"),name="password_reset_done"),
             path('reset_password_complete/', authViews.PasswordResetCompleteView.as_view(template_name="password_reset_complete.html"),name="password_reset_complete"),
     # path('review/<int:pk>/', ProductRewiew.as_view(),name="add_review"),
+    path('gallery/',Gallery.as_view(),name='gallery')
 ]
 
 

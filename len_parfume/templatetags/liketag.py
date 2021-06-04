@@ -1,6 +1,6 @@
-from django import template
-from len_parfume.models import Likes,User
+# from django import template
+# from len_parfume.models import Likes,User
 
-register = template.Library()
+# register = template.Library()
 
 

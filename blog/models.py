@@ -13,8 +13,6 @@ import uuid
 User=get_user_model()
 
 
-
-
 class CategoryBlog(models.Model):
     title = models.CharField(max_length=255,verbose_name='Название категории')
     slug = models.SlugField(max_length=220,verbose_name='Url категории',unique=True)

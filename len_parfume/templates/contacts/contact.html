@@ -1,0 +1,70 @@
+{%extends 'base.html'%}
+{% load crispy_forms_tags %}
+
+{%block title%} {{title}} {%endblock title%}
+
+{%block main%}
+
+<hr class="offset-top">
+
+<div class="white">
+  <hr class="offset-sm">
+
+  <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+          <div id="Address">
+            <address>
+              <label class="h3">{{contact.name}}</label><br>
+              <p>{{contact.text|safe}}</p>
+            </address>
+
+            <address>
+              <strong>Поддержка:</strong><br>
+              <a href="mailto:{{contact.email}}">{{contact.email}}</a>
+              <br><br>
+              {%if contact.developer%}
+              <strong>Разработчик:</strong><br>
+              <a href="mailto:{{contact.developer}}">{{contact.developer}}</a>
+              {%endif%}
+            </address>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <div class="container">
+            <img src="{{contact.image.url}}" style="width: 500px; margin-left: 100px;" alt="{{contact.name}}">
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <hr class="offset-lg">
+</div>
+<hr class="offset-top">
+
+<div class="gray">
+  <hr class="offset-lg">
+
+  <div class="container align-center">
+    <h1 class="upp"> Нужна помощь? </h1>
+    <p> Задайте вопрос ниже ! </p>
+    <hr class="offset-md">
+
+    <div class="row">
+      <div class="col-sm-4 col-sm-offset-4">
+        <form class="contact" action="{% url 'feedback' %}" method="POST">
+          {%csrf_token%}
+          {{form|crispy}}
+          <button type="submit" class="btn btn-primary justify"> Задать вопрос </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <br>
+</div>
+
+
+
+
+
+{%endblock main%}

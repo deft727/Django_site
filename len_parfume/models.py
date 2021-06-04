@@ -297,9 +297,6 @@ class Rewiews(models.Model):
         ordering = ['-data',]
 
 
-
-
-
 class Likes(models.Model):
 
     class Meta:

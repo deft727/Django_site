@@ -12,7 +12,6 @@ def get_item(context,filter):
     if not filter:
         return mark_safe("inactive")
     else:
-
         # product=Product.objects.get(id=filter)
         if request.user.is_authenticated:
             # user = User.objects.filter(username=request.user).first()

@@ -1,6 +1,7 @@
 {%load static%}
 {% load cart_tag %}
 {% load crispy_forms_tags %}
+{% load social_tags %}
 
 
 <!DOCTYPE html>
@@ -150,20 +151,17 @@
               <li><a href="{%url 'products'%}">Товары</a></li>
 
               <li><a href="{%url 'blog'%}">Блог</a></li>
-              <li><a href="./contacts/">Контакты</a></li>
+              <li><a href="{%url 'contact'%}">Контакты</a></li>
               <li class="dropdown">
-                <a href="./store/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  More <i class="ion-android-arrow-dropdown"></i>
+                <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  Больше <i class="ion-android-arrow-dropdown"></i>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="./about/">About Us</a></li>
-                  <li><a href="./checkout/">Checkout</a></li>
-                  <li><a href="./faq/">FAQ</a></li>
-                  <li><a href="./gallery/">Gallery</a></li>
+                  <li><a href="{%url 'about'%}">О нас</a></li>
+                  <li><a href="{%url 'gallery'%}">Галлерея</a></li>
+                  <li><a href="{%url 'faq'%}">Часто задаваемые вопросы</a></li>
                   <li role="separator" class="divider"></li>
-                  <li class="dropdown-header">Variations</li>
-                  <li><a href="./blog/item-photo.html">Article Photo</a></li>
-                  <li><a href="./blog/item-video.html">Article Video</a></li>
+                  
                 </ul>
               </li>
             </ul>
@@ -208,25 +206,25 @@
             <div class="col-xs-6 col-sm-3">
               <div class="item">
                 <i class="ion-ios-telephone-outline"></i>
-                <h1>24/7 free <br> <span>support</span></h1>
+                <h1>24/7 <br> <span>Поддержка</span></h1>
               </div>
             </div>
             <div class="col-xs-6 col-sm-3">
               <div class="item">
                 <i class="ion-ios-star-outline"></i>
-                <h1>Low price <br> <span>guarantee</span></h1>
+                <h1>Низкие цены <br> <span>100% оригинал</span></h1>
               </div>
             </div>
             <div class="col-xs-6 col-sm-3">
               <div class="item">
                 <i class="ion-ios-gear-outline"></i>
-                <h1> Manufacturer’s <br> <span>warranty</span></h1>
+                <h1> Гарантия <br> <span>От производителя</span></h1>
               </div>
             </div>
             <div class="col-xs-6 col-sm-3">
               <div class="item">
                 <i class="ion-ios-loop"></i>
-                <h1> Full refund <br> <span>guarantee</span> </h1>
+                <h1> Полный возврат<br> <span>Гарантия</span> </h1>
               </div>
             </div>
 
@@ -244,12 +242,23 @@
   
 
             <div class="social">
-              <a href="#"><i class="ion-social-facebook"></i></a>
-              <a href="#"><i class="ion-social-twitter"></i></a>
-              <a href="#"><i class="ion-social-googleplus-outline"></i></a>
-              <a href="#"><i class="ion-social-instagram-outline"></i></a>
-              <a href="#"><i class="ion-social-linkedin-outline"></i></a>
-              <a href="#"><i class="ion-social-youtube-outline"></i></a>
+              {% get_social_links as social_links %}
+              {% for item in social_links %}
+
+              {%if item.name == 'Facebook' %}
+              <a href="{{ item.link }}"><i class="ion-social-facebook"></i></a>
+              {%endif%}
+              {%if item.name == 'Twitter' %}
+              <a href="{{ item.link }}"><i class="ion-social-twitter"></i></a>
+              {%endif%}
+              
+              {%if item.name == 'Instagram' %}
+              <a href="{{ item.link }}"><i class="ion-social-instagram-outline"></i></a>
+              {%endif%}
+              {%if item.name == 'Linkedin' %}
+              <a href="{{ item.link }}"><i class="ion-social-linkedin-outline"></i></a>
+              {%endif%}
+              {%endfor%}
             </div>
 
 
@@ -264,51 +273,46 @@
 
         <div class="row menu">
           <div class="col-sm-3 col-md-2">
-            <h1 class="h4">Information <i class="ion-plus-round hidden-sm hidden-md hidden-lg"></i> </h1>
+            <h1 class="h4">Информация <i class="ion-plus-round hidden-sm hidden-md hidden-lg"></i> </h1>
 
             <div class="list-group">
-              <a href="#" class="list-group-item">About</a>
-              <a href="#" class="list-group-item">Terms</a>
-              <a href="#" class="list-group-item">How to order</a>
-              <a href="#" class="list-group-item">Delivery</a>
+              <a href="{%url 'about'%}" class="list-group-item">О нас</a>
+              <a href="{%url 'faq'%}" class="list-group-item">Часто задаваемые вопросы</a>
             </div>
           </div>
           <div class="col-sm-3 col-md-2">
-            <h1 class="h4">Products <i class="ion-plus-round hidden-sm hidden-md hidden-lg"></i> </h1>
+            <h1 class="h4">Продукты<i class="ion-plus-round hidden-sm hidden-md hidden-lg"></i> </h1>
 
             <div class="list-group">
-              <a href="#" class="list-group-item">Laptops</a>
-              <a href="#" class="list-group-item">Tablets</a>
-              <a href="#" class="list-group-item">Servers</a>
+              {%for cat in categories%}
+              <a href="{{cat.get_absolute_url}}" class="list-group-item">{{cat.name}}</a>
+             {%endfor%}
             </div>
           </div>
           <div class="col-sm-3 col-md-2">
-          	<h1 class="h4">Support <i class="ion-plus-round hidden-sm hidden-md hidden-lg"></i> </h1>
+          	<h1 class="h4">Поддержка <i class="ion-plus-round hidden-sm hidden-md hidden-lg"></i> </h1>
 
             <div class="list-group">
-              <a href="#" class="list-group-item">Returns</a>
-              <a href="#" class="list-group-item">FAQ</a>
-              <a href="#" class="list-group-item">Contacts</a>
+              <a href="{%url 'contact'%}" class="list-group-item">Контакты</a>
             </div>
           </div>
           <div class="col-sm-3 col-md-2">
-            <h1 class="h4">Location</h1>
+            <h1 class="h4">Локация</h1>
 
             <div class="dropdown">
       			  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      			    Language
+      			    Язык
       			    <span class="caret"></span>
       			  </button>
       			  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-      			    <li><a href="#English"> <img src="{% static 'img/flags/gb.png '%}" alt="Eng"/> English</a></li>
-      			    <li><a href="#Spanish"> <img src="{% static 'img/flags/es.png '%}" alt="Spa"/> Spanish</a></li>
-      			    <li><a href="#Deutch"> <img src="{% static 'img/flags/de.png '%}" alt="De"/> Deutch</a></li>
-      			    <li><a href="#French"> <img src="{% static 'img/flags/fr.png '%}" alt="Fr"/> French</a></li>
+      			    <li><a href="#Russian"> <img src="{% static 'img/flags/ru.png '%}" alt="Ru"/> Russian </a></li>
+      			    <li><a href="#Ukraine"> <img src="{% static 'img/flags/ua.png '%}" alt="Ua"/> Ukraine</a></li>
+
       			  </ul>
       			</div>
       			<hr class="offset-xs">
 
-      			<div class="dropdown">
+      			<!-- <div class="dropdown">
       			  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       			    Currency
       			    <span class="caret"></span>
@@ -319,21 +323,21 @@
       			    <li><a href="#Yen"><i class="ion-social-yen"></i> Yen</a></li>
       			    <li><a href="#Bitcoin"><i class="ion-social-bitcoin"></i> Bitcoin</a></li>
       			  </ul>
-      			</div>
+      			</div> -->
 
           </div>
+          {%get_contact as contact%}
           <div class="col-sm-3 col-md-3 col-md-offset-1 align-right hidden-sm hidden-xs">
-            <h1 class="h4">Unistore Pro, Inc.</h1>
+            <h1 class="h4">{{contact.title}}</h1>
 
               <address>
-                1305 Market Street, Suite 800<br>
-                San Francisco, CA 94102<br>
-                <abbr title="Phone">P:</abbr> (123) 456-7890
+                {{contact.address}}
+                <abbr title="Phone">Телефон:</abbr> {{contact.phone}}
               </address>
 
               <address>
-                <strong>Support</strong><br>
-                <a href="mailto:len.parfums@gmail.com">e-mail</a>
+                <strong>Поддержка</strong><br>
+                <a href="mailto:{{contact.email}}">{{contact.email}}</a>
               </address>
 
           </div>
@@ -342,7 +346,7 @@
 
       <hr>
 
-      <div class="container">
+     <!-- <div class="container">
         <div class="row">
           <div class="col-sm-8 col-md-9 payments">
             <p>Pay your order in the most convenient way</p>
@@ -357,14 +361,16 @@
             <br>
 
           </div>
+          
+
           <div class="col-sm-4 col-md-3 align-right align-center-xs">
             <hr class="offset-sm hidden-sm">
             <hr class="offset-sm">
-            <p>Unistore Pro © 2016 <br> Designed By <a href="http://sunrise.ru.com/" target="_blank">Sunrise Digital</a></p>
+            <p> <br> Designed By <a href="http://sunrise.ru.com/" target="_blank">Sunrise Digital</a></p>
             <hr class="offset-lg visible-xs">
           </div>
         </div>
-      </div>
+      </div>  -->
     </footer>
 
     <!-- Modal -->
@@ -449,7 +455,7 @@
             <div class="container-fluid">
               <div class="row">
                 <div class="col-sm-6">
-                  <h4 class="modal-title">Forgot Your Password?</h4>
+                  <h4 class="modal-title">Забыли пароль?</h4>
                   <br>
 
                   <form class="join" action="index.php" method="post">

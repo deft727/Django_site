@@ -1,0 +1,36 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block title%} {{title}} {%endblock title%}
+{%block main%}
+<hr class="offset-top">
+
+<div class="white">
+    <div class="container checkout">
+        <h1>Галлерея продуктов</h1>
+        <hr class="offset-sm">
+    </div>
+</div>
+
+<div class="black">
+<hr class="offset-lg">
+<hr class="offset-lg">
+
+<div class="container gallery">
+    <div class="row">
+    {%for i in gallery%}
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="preview" data-preview="{{i.image1.url}}" data-gallery="#photo" 
+              data-source="{{i.image1.url}}">
+          
+          <div class="title">
+            <div class="caption">
+              <i class="ion-ios-albums-outline"></i>
+              <h4> {{i.title}} </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    {%endfor%}
+    </div>
+</div>
+{%endblock main%}

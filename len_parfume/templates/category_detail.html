@@ -2,6 +2,7 @@
 {%load static%}
 {%block title%} {{title}} {%endblock title%}
 {% load search_filter %}
+{%load item_tag%}
 
 {%block main%}
 <hr class="offset-top">
@@ -41,7 +42,10 @@
           {%for product in category_products.object_list %}
           <div class="col-sm-6 col-md-4 product">
             <div class="body">
-              <a href="{%url 'add_to_whishlist' product.slug%}" class="favorites" data-favorite="inactive"><i class="ion-ios-heart-outline"></i></a>
+              <a href="{%url 'add_to_whishlist' product.slug%}" class="favorites" 
+              data-favorite={%get_item filter=product.id%}>
+             
+              <i class="ion-ios-heart-outline"></i></a>
               <a href="{{product.get_absolute_url}}"><img src="{{product.image1.url}}"  style="height: 180px;" alt="{{product.image1.title}}"/></a>
 
               <div class="content">

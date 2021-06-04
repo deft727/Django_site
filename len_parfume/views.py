@@ -106,8 +106,8 @@ def cart_detail(request):
 class IndexView(CusomerMixin,View):
     def get(self,request,*args,**kwargs):
         products = Product.objects.filter(available=True).select_related('category')
-        new_item = list(Product.objects.filter(in_top=True).order_by('-pk')[:4])
-        #  products.filter(in_top=True).order_by('-pk')[:4]
+
+        new_item = list(products.order_by('-pk')[:4])
         parfumes = list(Product.objects.filter(category__name='Парфюмерия').select_related('category')[:6])
         probes = list(products.filter(category__name='Пробники')[:6])
         accessories = list(products.filter(category__name='Аксессуары')[:6])
@@ -394,13 +394,13 @@ class SearchProduct(ListView):
         if search:
             if search[0].lower():
                 search=search.title()
-                products=Product.objects.filter(title__icontains=search,available=True)
+                products=Product.objects.filter(title__icontains=search,available=True).select_related('category')
                 # print(products)
                 return products
 
         else:
             try:
-                return redirect(request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
+                return redirect(self.request.META.get('HTTP_REFERER','redirect_if_referer_not_found'))
             except:
                 return redirect('home')
     
@@ -413,7 +413,7 @@ class SearchProduct(ListView):
 
 class AllProducts(ListView):
     model = Product
-    # queryset = Product.objects.filter(available=True)
+    queryset = Product.objects.filter(available=True).select_related('category') 
     context_object_name = 'products'
     template_name = 'products.html'
     slug_url_kwarg = 'slug'
@@ -442,10 +442,10 @@ class AllProducts(ListView):
                 pf = ProductFeatures.objects.filter(
                     q_condition_queries
                 ).prefetch_related('product', 'feature').values('product_id')
-                products = Product.objects.filter(id__in=[pf_['product_id'] for pf_ in pf]).select_related('category')
+                products = Product.objects.filter(available=True,id__in=[pf_['product_id'] for pf_ in pf]).select_related('category')
                 return products
         else:
-            products = Product.objects.all().select_related('category')
+            products = Product.objects.filter(available=True).select_related('category')
             return products
 
 
@@ -478,6 +478,16 @@ class AddReview(View):
                 return redirect('home')
         else:
             return redirect('login')
+
+
+class Gallery(ListView):
+    model = Product
+    queryset = Product.objects.filter(available=True).only('title','image1')
+    context_object_name = 'gallery'
+    template_name = 'gallery.html'
+    allow_empty=False
+    extra_context = {'title':'Галлерея товаров'}
+    paginate_by = 54
 
 
 class MakeOrderView(CusomerMixin,FinalPrice,View):
@@ -529,7 +539,7 @@ class MakeOrderView(CusomerMixin,FinalPrice,View):
                 new_order.status_online='Оплачено'
                 new_order.save()
 
-            subject = "Заказ на сайте 12312312"
+            subject = "LenParfumes"
             to = [new_order.email,]
             from_email = 'test@example.com'
             ctx = {

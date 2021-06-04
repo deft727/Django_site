@@ -1,0 +1,39 @@
+
+{%extends 'base.html'%}
+
+{%block title%} {{title}} {%endblock title%}
+
+{%block main%}
+
+<hr class="offset-top">
+
+<div class="white">
+    <div class="container checkout">
+        <h1>FAQ</h1>
+        <hr class="offset-sm">
+    </div>
+</div>
+<hr class="offset-md">
+
+<div class="container faq">
+    <div class="row">
+        {%for item in faq%}
+      <div class="col-sm-6">
+        <a class="" role="button" data-toggle="collapse" href="#question{{item.id}}" aria-expanded="true" aria-controls="question1">
+          <h1 class="h3">{{item.question}}</h1>
+        </a>
+
+        <div class="collapse" id="question{{item.id}}">
+          <div class="well">
+            <p>
+            {{item.answer}}
+            </p>
+          </div>
+        </div>
+        <br>
+        <!-- //// -->
+    </div>
+    {%endfor%}
+</div>
+</div>
+{%endblock main%}
